@@ -1,70 +1,108 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="ISO-8859-1">
 <title>Employee List</title>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="bootstrap.css">
-<style>
-body {
-	padding: 20px;
-}
-
-table {
-	background-color: #e9ecef;
-	border-radius: 10px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-th {
-	background-color: #348feb;
-}
-</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <body>
-	<a href="createEmployee">New Employee</a>
+	<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a  href="listall" class="nav-link active">Home</a>
+        </li>
+        <li class="nav-item">
+        	<a href="createEmployee" class="nav-link active">Create</a>
+      </ul>
+      <form action="search" method="get" class="d-flex">
+        <input class="form-control me-2" type="text" name="name" placeholder="Enter Name" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+	<div class="text-sm-right"><button class="btn btn-outline-primary btn-sm float-end" id="btn">Toggle</button></div>
 	<div class="container">
 		<h1 class="text-center">Employee List</h1>
 		<div class="table-responsive">
-			<table class="table table-striped ">
+			<table class="table table-striped" id="tb">
 				<thead>
-					<tr>
-						<th>S.No</th>
-						<th>Name</th>
-						<th>Email</th>
-						<th>Date of Birth</th>
-						<th>Age</th>
-						<th>Salary</th>
-						<th>Status</th>
-						<th colspan="2">Actions</th>
+						<tr>
+						<th class="col-lg-1 col-md-1 col-sm-1">S.No</th>
+						<th class="col-lg-2 col-md-2 col-sm-2">Name</th>
+						<th class="col-lg-2 col-md-2 col-sm-2">Email</th>
+						<th class="col-lg-2 col-md-2 col-sm-2">Date of Birth</th>
+						<th class="col-lg-1 col-md-1 col-sm-1">Age</th>
+						<th class="col-lg-2 col-md-2 col-sm-2">Salary</th>
+						<th class="col-lg-1 col-md-1 col-sm-1">Status</th>
+						<th colspan="2" class="col-lg-1 col-md-1 col-sm-1 text-center">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var="employee" items="${employee}">
 						<tr>
-							<td>${employee.id}</td>
-							<td>${employee.name}</td>
-							<td>${employee.email}</td>
-							<td>${employee.dob}</td>
-							<td>${employee.age}</td>
-							<td>${employee.salary}</td>
-							<td>${employee.status}</td>
-							<td><a href="update?id=${employee.id}"
-								class="btn btn-primary" role="button">Update</a></td>
-							<td><a href="delete?id=${employee.id}">Delete</a>
+							 <td class="col-lg-1 col-md-1 col-sm-1">${employee.id}</td>
+							 <td class="col-lg-2 col-md-2 col-sm-2">${employee.name}</td>
+							 <td class="col-lg-2 col-md-2 col-sm-2">${employee.email}</td>
+							 <td class="col-lg-2 col-md-2 col-sm-2">${employee.dob}</td>
+							 <td class="col-lg-1 col-md-1 col-sm-1">${employee.age}</td>
+							 <td class="col-lg-2 col-md-2 col-sm-2">${employee.salary}</td>
+							 <td class="col-lg-1 col-md-1 col-sm-1"><c:choose>
+								<c:when test="${employee.status==true}">
+									Active
+								</c:when>
+									<c:otherwise>
+								Inactive
+								</c:otherwise>
+								</c:choose></td>
+							<td class="col-lg-1 col-md-1 col-sm-1"><a href="update?id=${employee.id}" class="btn btn-info"><i
+									class="fas fa-edit"></i></a></td>
+							<td class="col-lg-1 col-md-1 col-sm-1"><a href="delete?id=${employee.id}"
+								class="btn btn-danger"><i class="fas fa-trash"></i></a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
 	</div>
+	${edited}
+	${deleted}
+	<script>
+	
+		var button = $("#btn");
+		var i = 0;
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+		button.on("click", function() {
+			var thead = $("thead");
+
+			if (i === 0) {
+				thead.removeClass("bg-secondary");
+				thead.addClass("bg-success");
+				i++;
+			} else if (i === 1) {
+				thead.removeClass("bg-success");
+				thead.addClass("bg-danger");
+				i++;
+			} else if (i === 2) {
+				thead.removeClass("bg-danger");
+				thead.addClass("bg-secondary");
+				i= 0;
+			}
+		});
+	</script>
 </body>
 </html>

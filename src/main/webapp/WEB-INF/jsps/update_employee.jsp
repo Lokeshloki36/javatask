@@ -1,77 +1,94 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>update employee</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link rel="stylesheet"
-	href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script>
 	$(function() {
 		$("#dob").datepicker({
 			changeMonth : true,
 			changeYear : true,
-			yearRange : '1950:2020'
+			yearRange : '1970:2020'
 		});
 	});
 </script>
 </head>
 <body>
-	<a href="listall">Home</a>
-	<a href="createEmployee">Create</a>
+	<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">Navbar</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item"><a href="listall" class="nav-link active">Home</a>
+					</li>
+					<li class="nav-item"><a href="createEmployee"
+						class="nav-link active">Create</a>
+				</ul>
+				<form action="search" method="get" class="d-flex">
+					<input class="form-control me-2" type="text" name="name"
+						placeholder="Enter Name" aria-label="Search">
+					<button class="btn btn-outline-success" type="submit">Search</button>
+				</form>
+			</div>
+		</div>
+	</nav>
 	<div class="container">
 		<header class="text-center">
-			<h1>Update Employee Details</h1>
+			<h1>Update Details</h1>
 		</header>
 	</div>
-	<form action="updateEmployee" method="post">
+	<form:form action="edit" method="post"
+		modelAttribute="employee">
+		<form:hidden path="id"/>
 		<div class="container">
-			<input type="hidden" name="id" value="${employee.id}">
-
 			<div class="form-group">
-				<label for="name">Name :</label> <input type="text"
-					class="form-control w-50" name="name" value="${employee.name}">
+				<form:label path="name">Name :</form:label>
+				<form:input path="name" class="form-control" id="name" />
 			</div>
-
 			<div class="form-group">
-				<label for="name">Email :</label> <input type="email"
-					class="form-control w-50" name="email" value="${employee.email}">
+				<form:label path="email">Email:</form:label>
+				<form:input type="email" class="form-control" path="email"
+					id="email" />
 			</div>
-
 			<div class="form-group">
-				<label for="name">DOB :</label> <input type="text"
-					class="form-control w-50" name="dob" id="dob"
-					onchange="calculateAge()" value="${employee.dob}">
+				<form:label path="dob">Date of Birth:</form:label>
+				<form:input class="form-control" path="dob" id="dob"
+					onchange="calculateAge()" required="true"/>
 			</div>
-
 			<div class="form-group">
-				<label for="name">Age :</label> <input type="text"
-					class="form-control w-50" name="age" id="age"
-					value="${employee.age}">
+				<form:label path="age">Age:</form:label>
+				<form:input class="form-control" path="age" id="age"/>
 			</div>
-
 			<div class="form-group">
-				<label for="name">Salary :</label> <input type="text"
-					class="form-control w-50" name="salary" value="${employee.salary}">
+				<form:label path="salary">Salary:</form:label>
+				<form:input class="form-control" path="salary" id="salary"/>
 			</div>
-
 			<div class="form-group">
-				<label for="name">Status :</label> <select name="status"
-					class="form-control w-50">
-					<option value="true">Active</option>
-					<option value="false">InActive</option>
-				</select>
+				<form:label path="status">Status:</form:label>
+				<form:select path="status" class="form-control" id="status">
+					<form:option value="true">Active</form:option>
+					<form:option value="false">InActive</form:option>
+				</form:select>
 			</div>
-			<button type="submit" class="btn btn-default">Update</button>
+			<br>
+			<button type="submit" class="btn btn-primary">Update</button>
+			<a href="listall"class="btn btn-danger">Cancel</a>
 		</div>
-	</form>
+	</form:form>
 	<script>
 		function calculateAge() {
 			var dob = document.getElementById("dob").value;

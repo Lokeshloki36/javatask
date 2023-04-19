@@ -3,10 +3,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.java_task.entities.Employee;
+import com.java_task.payload.PostResponse;
 import com.java_task.service.EmployeeService;
 
 
@@ -17,7 +19,8 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 	
 	@RequestMapping("/createEmployee")
-	public String viewCreateEmployee() {
+	public String viewCreateEmployee(Model model) {
+		model.addAttribute("employee", new Employee());
 		return "create_employee";
 	}
 	
@@ -28,7 +31,6 @@ public class EmployeeController {
 		model.addAttribute("employee", list);
 		return "list_employees";
 	}
-	
 	
 	@RequestMapping("/listall")
 	public String getAllLeads(Model model){
@@ -51,12 +53,20 @@ public class EmployeeController {
 		return "update_employee";
 	}
 	
-	@RequestMapping("/updateEmployee")
-	public String updateEmployee(@ModelAttribute("employee")Employee employee,Model model) {
+	@RequestMapping("/edit")
+	public String updateEmployee(@ModelAttribute("employee")Employee employee,
+			Model model) {
 		employeeService.saveEmployee(employee);
-		model.addAttribute("edited", "Employee Details Updated Successfully!");
 		List<Employee> employees = employeeService.showAllEmployees();
 		model.addAttribute("employee", employees);
+		model.addAttribute("edited", "Employee Details Updated Successfully!");
 		return "list_employees";
+	}
+	
+	@GetMapping("/search")
+	public String searchByName(@RequestParam("name") String name,Model model) {
+		List<Employee> records = employeeService.searchByName(name);
+		model.addAttribute("record", records);
+		return "view_details";
 	}
 }

@@ -21,7 +21,6 @@ public class Employee {
 	private String name;
 	@NotNull@Email
 	private String email;
-	@NotNull
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dob;
 	@NotNull
